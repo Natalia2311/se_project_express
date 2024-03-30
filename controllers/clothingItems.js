@@ -1,6 +1,6 @@
  const ClothingItem = require('../models/clothingItem');
 
- const creatItem = (req, res) => {
+ const createItem = (req, res) => {
     console.log(req.user._id);
     const {name, weather, imageUrl} = req.body;
     
@@ -45,5 +45,5 @@ const deleteItem = (req, res) => {
    };
 
 
- module.exports = { creatItem, getItems, updateItem, deleteItem }; 
+ module.exports = { createItem, getItems, updateItem, deleteItem }; 
 
