@@ -32,7 +32,7 @@ likes: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
-    Default: [],
+    Default: "",
 },
 createdAt: {
   type: Date,
