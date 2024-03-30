@@ -8,8 +8,8 @@
     ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
    
     .then((item) => {
-   
-        res.send({data:item})
+        res.status(201)
+        .send(item)
         .catch((err) => {
             console.error(err);
           if (err.name === 'ValidationError') {
@@ -64,9 +64,9 @@ return res.status(SERVER_ERROR).send({ message: err.message });
 const deleteItem = (req, res) => {
     const {itemId} = req.param;
 
-    ClothingItem.findByIdAndDelete(itemId)
+    ClothingItem.findByIdAndDelete(req.params.id)
     .orFail()
-    .then((item) => res.status(BAD_REQUEST_ERROR).send({}))
+    .then((item) => res.status(BAD_REQUEST_ERROR).send({ data: item}))
     .catch((err) => {
         console.error(err);
       if (err.name === 'DocumentNotFoundError') {
@@ -81,13 +81,16 @@ const deleteItem = (req, res) => {
    };
 
    const likeItem = (req, res) => {
+    console.log(req.user._id);
+    const userId = req.user._id;
+    const { itemId } = req.params;
     ClothingItem.findByIdAndUpdate(
-        req.params.itemId,
-        { $addToSet: { likes: req.user._id } },
+      itemId,
+        { $addToSet: { likes: userId } },
         { new: true },
     )
     .orFail
-    .then((itemId) => res.status(200).send({ data: itemId }))
+    .then((item) => res.status(200).send({ data: item }))
     .catch((err) => {
         console.error(err);
       if (err.name === 'CastError') {

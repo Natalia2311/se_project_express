@@ -35,12 +35,13 @@ return res.status(SERVER_ERROR).send({ message: err.message });
   };
 
   const getUserId = (req, res) => {
-  const { userId } = req.params._id; 
+  const { userId } = req.params; 
     User.findById(userId)
     .orFail()
       .then((user) => res.status(200).send(user))
       .catch((err) => {
-        console.error(err);
+        //console.error(err);
+        console.log(err)
         if (err.name === "ValidationError") {
           return res.status(BAD_REQUEST_ERROR).send({ message: err.message });
         }
