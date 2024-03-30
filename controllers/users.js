@@ -30,7 +30,7 @@ const createUser = (req, res) => {
     
     User.findById(userId, {$set: {avatar}})
     .orFail()
-      .then((item) => res.status(200).send(item))
+      .then((user) => res.status(200).send(user))
       .catch((err) => {
         console.error(err);
         if (err.name === "Error") {
