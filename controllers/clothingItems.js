@@ -7,9 +7,7 @@
     
     ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
    
-    .then((item) => {
-        res.status(201)
-        .send(item)
+    .then((item) => res.status(201).send(item))
         .catch((err) => {
             console.error(err);
           if (err.name === 'ValidationError') {
@@ -20,8 +18,8 @@
     
     });
 
-});
- };
+};
+ 
 
 const getItems = (req, res) => {
     ClothingItem.find({})
@@ -66,7 +64,7 @@ const deleteItem = (req, res) => {
    
     ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    .then((item) => res.status(200).send({ message: "Item deleted" }))
+    .then(() => res.status(200).send({ message: "Item deleted" }))
     .catch((err) => {
         console.error(err);
       if (err.name === 'DocumentNotFoundError') {
