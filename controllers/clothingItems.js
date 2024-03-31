@@ -81,12 +81,11 @@ const deleteItem = (req, res) => {
    };
 
    const likeItem = (req, res) => {
-    //console.log(req.user._id);
-    //const userId = req.user._id;
     const { itemId } = req.params;
+    const { _id: userId } = req.body;
     ClothingItem.findByIdAndUpdate(
       itemId,
-        { $addToSet: { likes: req.user._id } },
+        { $addToSet: { likes: userId } },
         { new: true },
     )
     .orFail()
