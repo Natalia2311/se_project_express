@@ -41,7 +41,7 @@ return res.status(SERVER_ERROR).send({ message: err.message });
       .then((user) => res.status(200).send(user))
       .catch((err) => {
         console.error(err);
-        console.log(err.name);
+        
         if (err.name === "ValidationError") {
           return res.status(BAD_REQUEST_ERROR).send({ message: err.message });
         }

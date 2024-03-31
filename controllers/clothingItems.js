@@ -62,11 +62,11 @@ return res.status(SERVER_ERROR).send({ message: err.message });
 }
 
 const deleteItem = (req, res) => {
-    const { itemId } = req.param.id;
-    console.log(itemId);
+    const { itemId } = req.params;
+   
     ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    .then((itemId) => res.status(200).send({ data: itemId}))
+    .then((item) => res.status(200).send({ message: "Item deleted" }))
     .catch((err) => {
         console.error(err);
       if (err.name === 'DocumentNotFoundError') {
