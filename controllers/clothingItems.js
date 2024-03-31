@@ -62,11 +62,11 @@ return res.status(SERVER_ERROR).send({ message: err.message });
 }
 
 const deleteItem = (req, res) => {
-    const {itemId} = req.param;
-
-    ClothingItem.findByIdAndDelete(req.params.id)
+    const { itemId } = req.param.id;
+    console.log(itemId);
+    ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    .then((item) => res.status(BAD_REQUEST_ERROR).send({ data: item}))
+    .then((itemId) => res.status(200).send({ data: itemId}))
     .catch((err) => {
         console.error(err);
       if (err.name === 'DocumentNotFoundError') {
@@ -81,15 +81,15 @@ const deleteItem = (req, res) => {
    };
 
    const likeItem = (req, res) => {
-    console.log(req.user._id);
-    const userId = req.user._id;
+    //console.log(req.user._id);
+    //const userId = req.user._id;
     const { itemId } = req.params;
     ClothingItem.findByIdAndUpdate(
       itemId,
-        { $addToSet: { likes: userId } },
+        { $addToSet: { likes: req.user._id } },
         { new: true },
     )
-    .orFail
+    .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((err) => {
         console.error(err);
