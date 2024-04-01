@@ -10,13 +10,11 @@ const getUsers = (req, res) => {
     .then((users) => res.status(200).send(users))
     .catch((err) => {
       console.error(err);
-      if (err.name === "CastError") {
-        return res.status(BAD_REQUEST_ERROR).send({ message: err.message });
-      }
+      
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND_ERROR).send({ message: err.message });
+        return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address" });
       }
-      return res.status(SERVER_ERROR).send({ message: err.message });
+      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -27,15 +25,15 @@ const createUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST_ERROR).send({ message: err.message });
+        return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" });
       }
 
-      return res.status(SERVER_ERROR).send({ message: err.message });
+      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server" });
     });
 };
 
 const getUserId = (req, res) => {
-  const userId = req.params.userId;
+  const { userId } = req.params.userId;
   User.findById(userId)
     .orFail()
     .then((user) => res.status(200).send(user))
@@ -43,13 +41,11 @@ const getUserId = (req, res) => {
       console.error(err);
 
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND_ERROR).send({ message: err.message });
-      } else if (err.name === "CastError") {
-        return res.status(BAD_REQUEST_ERROR).send({ message: err.message });
-      } else if (err.name === "ValidationError") {
-        return res.status(NOT_FOUND_ERROR).send({ message: err.message });
+        return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address" });
+      }  if (err.name === "CastError") {
+        return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid ID"  });
       } else {
-        return res.status(SERVER_ERROR).send({ message: err.message });
+        return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server" });
       }
     });
 };
