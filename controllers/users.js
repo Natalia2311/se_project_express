@@ -35,25 +35,36 @@ return res.status(SERVER_ERROR).send({ message: err.message });
   };
 
   const getUserId = (req, res) => {
-    const { userId } = req.params.userId; 
+    const userId = req.params.userId; 
       User.findById(userId)
       .orFail()
         .then((user) => res.status(200).send(user))
         .catch((err) => {
           console.error(err);
 
-          if (err.name === 'ValidationError') {
-            return res.status(NOT_FOUND_ERROR).send({ message: err.message });
-            } 
-          
-          if (err.name === "DocumentNotFoundError") {
+          if (err.name === 'CastError') {
             return res.status(BAD_REQUEST_ERROR).send({ message: err.message });
+          } 
+          if (err.name === 'ValidationError') {
+              return res.status(NOT_FOUND_ERROR).send({ message: err.message });
+              } 
+           
+          else {
+            return res.status(SERVER_ERROR).send({ message: err.message })
           }
-         
-          return res.status(SERVER_ERROR).send({ message: err.message });
+          // if (err.name === 'ValidationError') {
+          //   return res.status(NOT_FOUND_ERROR).send({ message: err.message });
+          //   } 
           
-          });
-  };
+          // if (err.name === "DocumentNotFoundError") {
+          //   return res.status(BAD_REQUEST_ERROR).send({ message: err.message });
+          // }
+         
+          // return res.status(SERVER_ERROR).send({ message: err.message });
+          
+          // });
+  });
+};
 
 module.exports = { getUsers, createUser, getUserId };
 
