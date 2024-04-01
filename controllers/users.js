@@ -42,13 +42,17 @@ return res.status(SERVER_ERROR).send({ message: err.message });
         .catch((err) => {
           console.error(err);
 
+          if (err.name === 'DocumentNotFoundError') {
+            return res.status(NOT_FOUND_ERROR).send({ message: err.message });
+          } else 
+
           if (err.name === 'CastError') {
             return res.status(BAD_REQUEST_ERROR).send({ message: err.message });
           } else if (err.name === 'ValidationError') {
               return res.status(NOT_FOUND_ERROR).send({ message: err.message });
-              } 
-           
-          else {
+              } else 
+
+           {
             return res.status(SERVER_ERROR).send({ message: err.message })
           }
          
