@@ -72,9 +72,9 @@ const deleteItem = (req, res) => {
     }
     if (err.name === 'CastError') {
     return res.status(BAD_REQUEST_ERROR).send({ message: err.message });
-    } 
+    } else {
     return res.status(SERVER_ERROR).send({ message: err.message });
-    
+    };
     });
    };
 
