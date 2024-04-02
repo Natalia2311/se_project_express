@@ -33,7 +33,7 @@ const createUser = (req, res) => {
 };
 
 const getUserId = (req, res) => {
-  const { userId } = req.params.userId;
+  const { userId } = req.params;
   User.findById(userId)
     .orFail()
     .then((user) => res.status(200).send(user))
@@ -44,9 +44,9 @@ const getUserId = (req, res) => {
         return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address" });
       }  if (err.name === "CastError") {
         return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid ID"  });
-      } else {
+      }  
         return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server" });
-      }
+      
     });
 };
 
