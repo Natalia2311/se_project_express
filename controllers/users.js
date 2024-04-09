@@ -29,8 +29,10 @@ const createUser = (req, res) => {
   User.findOne({ email })
   .select("+password")
     .then((user) => {
-      if (!user) {
-        throw new Error("Email is already in use");
+      if (user) {
+        const error = new Error("Duplicate user");
+        error.statusCode = CONFLICT_ERROR;
+        throw error;
       }
       return bcrypt.hash(password, 10);
     })
@@ -42,7 +44,7 @@ const createUser = (req, res) => {
     })
     .catch((err) => {
             console.error(err.name);
-            if (err.name === 11000) {
+            if (err.name === "Duplicate user") {
               return res.status(CONFLICT_ERROR).send({ message: "An email address that already exists on the server" });
             }
       
