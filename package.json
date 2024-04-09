@@ -11,7 +11,11 @@
   "author": "Natalia Semenova",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.1",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^6.6.1",
     "validator": "^13.11.0"
   },
@@ -20,6 +24,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
+    "module-name": "^0.0.1-security",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5"
   }

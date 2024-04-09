@@ -3,6 +3,7 @@ const {
   BAD_REQUEST_ERROR,
   NOT_FOUND_ERROR,
   SERVER_ERROR,
+  FORBIDDEN_ERROR,
 } = require("../utils/errors");
 
 const createItem = (req, res) => {
@@ -46,6 +47,9 @@ const deleteItem = (req, res) => {
     .then(() => res.status(200).send({ message: "Item deleted" }))
     .catch((err) => {
       console.error(err);
+      if (!itemId.user === req.user._id) {
+        return res.status(FORBIDDEN_ERROR).send({ message: "The user is trying to remove the card of another user" });
+       } 
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address" });
       }
