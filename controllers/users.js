@@ -25,7 +25,9 @@ const { JWT_SECRET } = require('../utils/config');
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
-  
+  if (!email || !password) {
+    return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid ID" });
+  };
   User.findOne({ email })
   .select("+password")
     .then((user) => {
@@ -35,15 +37,17 @@ const createUser = (req, res) => {
         throw error;
       }
       return bcrypt.hash(password, 10);
-    })
-    .then((hash) => User.create({ name, avatar, email, password: hash }))
+})
+    .then((hash) => {
+    return User.create({ name, avatar, email, password: hash })
+    
     .then((user) => {
       const payload = user.toObject();
       delete payload.password;
       res.status(201).send({ data: payload });
     })
-    .catch((err) => {
-            console.error(err.name);
+   }).catch((err) => {
+            console.error(err);
             if (err.name === "Duplicate user") {
               return res.status(CONFLICT_ERROR).send({ message: "An email address that already exists on the server" });
             }
