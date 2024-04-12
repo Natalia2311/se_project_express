@@ -63,7 +63,7 @@ const createUser = (req, res) => {
     if (!email || !password) {
         return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" }); 
       } 
-    return User.findUserByCredentials(email, password)
+   User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
@@ -72,18 +72,16 @@ const createUser = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      if (err.name === "Incorrect email or password") {
+      if (err.message === "Incorrect email or password") {
         return res.status(UNAUTHORIZED_ERROR).send({ message: "An incorrect email or password" });
       } 
-      if (!email || !password) {
-        return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" }); 
-      }
-      // if (err.name === "DocumentNotFoundError") {
-      //   return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address" });
-      // } 
+
+       if (err.name === "DocumentNotFoundError") {
+        return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" });
+      } 
       
       return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server" });
-    });
+  });
   };
 
 const getCurrentUser = (req, res) => {

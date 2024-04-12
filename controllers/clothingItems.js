@@ -40,16 +40,21 @@ const getItems = (req, res) => {
 
 
 const deleteItem = (req, res) => {
-  const { itemId } = req.params;
-
-  ClothingItem.findByIdAndDelete(itemId)
+ 
+  ClothingItem.findById(req.params.itemId)
     .orFail()
-    .then(() => res.status(200).send({ message: "Item deleted" }))
+    .then(() => {
+      if (req.params.itemId !== req.user._id) {
+        return res.status(FORBIDDEN_ERROR).send({ message: "The user is trying to remove the card of another user" });
+       } else {
+        ClothingItem.deleteOne(req.params.itemId)
+        .orFail()
+        .then(() => res.status(200).send({ message: "Item deleted" }));
+       }
+    })  
     .catch((err) => {
       console.error(err);
-      if (!itemId.user === req.user._id) {
-        return res.status(FORBIDDEN_ERROR).send({ message: "The user is trying to remove the card of another user" });
-       } 
+      
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address" });
       }
@@ -60,6 +65,8 @@ const deleteItem = (req, res) => {
       
     });
 };
+
+
 
 const likeItem = (req, res) => {
   const { itemId } = req.params;
