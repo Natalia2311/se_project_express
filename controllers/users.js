@@ -29,12 +29,9 @@ const createUser = (req, res) => {
     return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid ID" });
   };
   User.findOne({ email })
-  .select("+password")
     .then((user) => {
       if (user) {
-        const error = new Error("Duplicate user");
-        error.statusCode = CONFLICT_ERROR;
-        throw error;
+        return res.status(CONFLICT_ERROR).send({ message: "Duplicate user" })
       }
       return bcrypt.hash(password, 10);
 })
@@ -78,9 +75,9 @@ const createUser = (req, res) => {
       if (err.name === "Incorrect email or password") {
         return res.status(UNAUTHORIZED_ERROR).send({ message: "An incorrect email or password" });
       } 
-      // if (!email || !password) {
-      //   return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" }); 
-      // }
+      if (!email || !password) {
+        return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" }); 
+      }
       // if (err.name === "DocumentNotFoundError") {
       //   return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address" });
       // } 
@@ -92,7 +89,7 @@ const createUser = (req, res) => {
 const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
   .orFail()
-  .then((user) => res.status(201).send({ user }))
+  .then((user) => res.status(200).send({ user }))
   .catch((err) => {
     console.error(err);
 
