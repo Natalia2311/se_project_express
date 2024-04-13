@@ -14,6 +14,15 @@ In this project:
 10. Handle errors (If something goes wrong with the request, you'll need to return an appropriate message, along with the corresponding error code).
 11. Test your project with Postman and GitHub Actions
 
+ The basics of authorization and how to secure the server that hosts your applications.
+
+ 1.Add routes and controllers for signing up and signing in
+ 2.Create the login controller
+ 3.Create middleware for authorization
+ 4.Add a controller and route to get the user data and modify the user data
+ 5.Configure user rights
+ 6.
+
 ## Running the Project
 `npm run start` — to launch the server 
 

@@ -19,7 +19,9 @@ const createItem = (req, res) => {
         return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" });
       }
 
-      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server" });
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -30,43 +32,49 @@ const getItems = (req, res) => {
 
     .catch((err) => {
       console.error(err);
-      
+
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND_ERROR).send({ message: "Invalid ID" });
       }
-      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server"});
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
-
 const deleteItem = (req, res) => {
- 
   ClothingItem.findById(req.params.itemId)
     .orFail()
     .then(() => {
       if (req.params.itemId !== req.user._id) {
-        return res.status(FORBIDDEN_ERROR).send({ message: "The user is trying to remove the card of another user" });
-       } else {
+        return res
+          .status(FORBIDDEN_ERROR)
+          .send({
+            message: "The user is trying to remove the card of another user",
+          });
+      } 
+      
         ClothingItem.deleteOne(req.params.itemId)
-        .orFail()
-        .then(() => res.status(200).send({ message: "Item deleted" }));
-       }
-    })  
+          .orFail()
+          .then(() => res.status(200).send({ message: "Item deleted" }));
+      
+    })
     .catch((err) => {
       console.error(err);
-      
+
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address" });
+        return res
+          .status(NOT_FOUND_ERROR)
+          .send({ message: " There is no clothing item with the requested id" });
       }
       if (err.name === "CastError") {
-        return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid ID"});
-      }  
-        return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server" });
-      
+        return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid ID" });
+      }
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
     });
 };
-
-
 
 const likeItem = (req, res) => {
   const { itemId } = req.params;
@@ -84,9 +92,13 @@ const likeItem = (req, res) => {
         return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid ID" });
       }
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address" });
+        return res
+          .status(NOT_FOUND_ERROR)
+          .send({ message: "The request was sent to a non-existent address" });
       }
-      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server" });
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -107,9 +119,13 @@ const dislikeItem = (req, res) => {
         return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid ID" });
       }
       if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND_ERROR).send({ message: "The request was sent to a non-existent address"});
+        return res
+          .status(NOT_FOUND_ERROR)
+          .send({ message: "The request was sent to a non-existent address" });
       }
-      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server" });
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
