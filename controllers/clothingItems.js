@@ -46,15 +46,17 @@ const deleteItem = (req, res) => {
   ClothingItem.findById(req.params.itemId)
     .orFail()
     .then(() => {
-      if (req.params.itemId !== req.user._id) {
-        return res
+      if (item.owner.equals(req.user._id)) {
+        res
           .status(FORBIDDEN_ERROR)
           .send({
             message: "The user is trying to remove the card of another user",
           });
+          return;
+          
       } 
       
-        ClothingItem.deleteOne(req.params.itemId)
+        ClothingItem.deleteOne({ _id:  req.params.itemId })
           .orFail()
           .then(() => res.status(200).send({ message: "Item deleted" }));
       
@@ -74,6 +76,7 @@ const deleteItem = (req, res) => {
         .status(SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
+   
 };
 
 const likeItem = (req, res) => {

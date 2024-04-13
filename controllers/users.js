@@ -13,32 +13,28 @@ const { JWT_SECRET } = require("../utils/config");
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
   if (!email || !password) {
-    return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" });
+     res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" });
+     return;
   }
   User.findOne({ email })
     .then((user) => {
       if (user) {
         return res.status(CONFLICT_ERROR).send({ message: "An email address that already exists on the server" });
       }
-      return bcrypt.hash(password, 10);
-    })
+   
+    return bcrypt.hash(password, 10)
     .then((hash) => {
-      return User.create({ name, avatar, email, password: hash })
+       User.create({ name, avatar, email, password: hash })
 
         .then((user) => {
           const payload = user.toObject();
           delete payload.password;
           res.status(201).send({ data: payload });
         });
+      });
     })
     .catch((err) => {
       console.error(err);
-      if (err.name === "Duplicate user") {
-        return res.status(CONFLICT_ERROR).send({
-          message: "An email address that already exists on the server"
-        });
-      }
-
       if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid ID" });
       }
@@ -52,7 +48,8 @@ const createUser = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" });
+     res.status(BAD_REQUEST_ERROR).send({ message: "Invalid data" });
+     return;
   }
   User.findUserByCredentials(email, password)
     .then((user) => {
@@ -105,7 +102,7 @@ const updateUser = (req, res) => {
   const { name, avatar } = req.body;
   User.findByIdAndUpdate(
     userId,
-    { name: name, avatar: avatar },
+    { name, avatar },
     { new: true, runValidators: true },
   )
     .then((user) => res.status(200).send({ data: user }))
