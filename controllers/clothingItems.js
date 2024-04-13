@@ -45,7 +45,7 @@ const getItems = (req, res) => {
 const deleteItem = (req, res) => {
   ClothingItem.findById(req.params.itemId)
     .orFail()
-    .then(() => {
+    .then((item) => {
       if (item.owner.equals(req.user._id)) {
         res
           .status(FORBIDDEN_ERROR)
