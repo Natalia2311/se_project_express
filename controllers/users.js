@@ -26,8 +26,8 @@ const createUser = (req, res) => {
     .then((hash) => {
        User.create({ name, avatar, email, password: hash })
 
-        .then(() => {
-          const payload = user.toObject();
+        .then((newUser) => {
+          const payload = newUser.toObject();
           delete payload.password;
           res.status(201).send({ data: payload });
         });
