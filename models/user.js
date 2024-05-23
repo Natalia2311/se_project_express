@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    //select: true,
+    select: true,
     required: [true, "The avatar field is required."],
     validate: {
       validator(value) {
