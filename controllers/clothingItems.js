@@ -115,7 +115,7 @@ const dislikeItem = (req, res) => {
     { new: true },
   )
     .orFail()
-    .then(() => res.status(200).send({ data: itemId }))
+    .then((item) => res.status(200).send({ data: item }))
     .catch((err) => {
       console.error(err);
       if (err.name === "CastError") {
