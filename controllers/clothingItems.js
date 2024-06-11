@@ -33,7 +33,7 @@ const getItems = (req, res, next) => {
       console.error(err);
 
       if (err.name === "DocumentNotFoundError") {
-         next(new NotFoundError( "Invalid ID"));
+         next(new NotFoundError("Invalid ID"));
       } else {
         next(err);
       }

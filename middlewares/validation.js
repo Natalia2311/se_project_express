@@ -53,7 +53,7 @@ const validateURL = (value, helpers) => {
     }),
   });
 
-  module.exports.validateLogin= celebrate({
+  module.exports.validateLogin = celebrate({
     body: Joi.object().keys({
 
       email: Joi.string().required().messages({
