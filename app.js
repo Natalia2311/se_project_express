@@ -21,6 +21,12 @@ mongoose
   })
   .catch(console.error);
 
+  app.get('/crash-test', () => {
+    setTimeout(() => {
+      throw new Error('Server will crash now');
+    }, 0);
+  });
+
   app.use(requestLogger);
 
 app.use(express.json());
@@ -33,7 +39,7 @@ app.use(errors());
 //   console.error(err);
 //   return res.status(500).send({ message: 'An error occurred on the server' });
 // });
-app.use(errorHandler);
+//app.use(errorHandler);
 app.use((err, req, res, next) => {
   console.error(err);
   // if an error has no status, set it to 500
