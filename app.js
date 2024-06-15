@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const routes = require("./routes");
-const errorHandler = require('./middlewares/errorHandler');
+const { errorHandler }= require('./middlewares/errorHandler');
 const { errors } = require('celebrate');
 const  {
   requestLogger,
@@ -39,20 +39,20 @@ app.use(errors());
 //   console.error(err);
 //   return res.status(500).send({ message: 'An error occurred on the server' });
 // });
-//app.use(errorHandler);
-app.use((err, req, res, next) => {
-  console.error(err);
-  // if an error has no status, set it to 500
-  const { statusCode = 500, message } = err;
-  res
-    .status(statusCode)
-    .send({
-      // check the status and display a message based on it
-      message: statusCode === 500
-        ? 'An error occurred on the server'
-        : message
-    });
-});
+app.use(errorHandler);
+// app.use((err, req, res, next) => {
+//   console.error(err);
+//   // if an error has no status, set it to 500
+//   const { statusCode = 500, message } = err;
+//   res
+//     .status(statusCode)
+//     .send({
+//       // check the status and display a message based on it
+//       message: statusCode === 500
+//         ? 'An error occurred on the server'
+//         : message
+//     });
+// });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
