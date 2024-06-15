@@ -26,7 +26,7 @@ mongoose
       throw new Error('Server will crash now');
     }, 0);
   });
-
+ 
   app.use(requestLogger);
 
 app.use(express.json());
@@ -35,25 +35,12 @@ app.use(routes);
 app.use(errorLogger);
 app.use(errors());
 
-// app.use((err, req, res, next) => {
-//   console.error(err);
-//   return res.status(500).send({ message: 'An error occurred on the server' });
-// });
-app.use(errorHandler);
-// app.use((err, req, res, next) => {
-//   console.error(err);
-//   // if an error has no status, set it to 500
-//   const { statusCode = 500, message } = err;
-//   res
-//     .status(statusCode)
-//     .send({
-//       // check the status and display a message based on it
-//       message: statusCode === 500
-//         ? 'An error occurred on the server'
-//         : message
-//     });
-// });
+app.use((err, req, res, next) => {
+  console.error(err);
+res.status(err.statusCode).send({ message: err.message });
+});
 
+app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
