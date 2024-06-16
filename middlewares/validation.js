@@ -5,7 +5,7 @@ const validateURL = (value, helpers) => {
     if (validator.isURL(value)) {
       return value;
     }
-    return helpers.error('string.uri');
+    return helpers.error('string.url');
   }
 
   module.exports.validateCardBody = celebrate({
@@ -35,7 +35,7 @@ const validateURL = (value, helpers) => {
         "string.empty": 'The "name" field must be filled in',
       }),
 
-      email: Joi.string().required().messages({
+      email: Joi.string().required().email().messages({
         "string.empty": 'The "Email" field must be filled in', 
         "string.email": 'The "email" field must be a valid email', 
       }),
@@ -56,7 +56,7 @@ const validateURL = (value, helpers) => {
   module.exports.validateLogin = celebrate({
     body: Joi.object().keys({
 
-      email: Joi.string().required().messages({
+      email: Joi.string().required().email().messages({
         "string.empty": 'The "Email" field must be filled in', 
         "string.email": 'The "email" field must be a valid email', 
       }),
