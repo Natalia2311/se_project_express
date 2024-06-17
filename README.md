@@ -30,3 +30,24 @@ In this project:
 
 ### Testing
 Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+
+
+#### Improved WTWR application by adding three new middlewares to it, and you deployed the application to the cloud. 
+wtwr.polonisgroup.com
+
+Created a virtual machine for the remote server on Google Cloud and connected to the server through SSH
+
+Installed and configured all of the required tools: Node.js, MongoDB, Git
+
+Launched the server using the PM2 process manager
+
+Registered subdomains for both the frontend and backend
+
+Configured request redirection from public URLs to the application using nginx
+
+Encrypted data with an SSL certificate
+
+Stored secrets in a .env file on the server
+
+Uploaded the front end to the server and configured ngnix to serve the front end
+
