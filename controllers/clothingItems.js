@@ -1,9 +1,7 @@
 const ClothingItem = require("../models/clothingItem");
-const {
-  BadRequestError,
-  NotFoundError,
-  ForbiddenError,
-} = require("../utils/errors.js");
+const { BadRequestError } = require("../errors/BadRequestError");
+const { NotFoundError } = require("../errors/NotFoundError");
+const { ForbiddenError } = require("../errors/ForbiddenError");
 
 const createItem = (req, res, next) => {
   console.log(req.user._id);
@@ -30,11 +28,7 @@ const getItems = (req, res, next) => {
     .catch((err) => {
       console.error(err);
 
-      if (err.name === "DocumentNotFoundError") {
-        next(new NotFoundError("Invalid ID"));
-      } else {
-        next(err);
-      }
+      next(err);
     });
 };
 
