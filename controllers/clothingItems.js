@@ -2,8 +2,6 @@ const ClothingItem = require("../models/clothingItem");
 const {
   BadRequestError,
   NotFoundError,
-  ConflictError,
-  UnauthorizedError,
   ForbiddenError,
 } = require("../utils/errors.js");
 
@@ -17,7 +15,7 @@ const createItem = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-         next(new BadRequestError("Invalid data"));
+        next(new BadRequestError("Invalid data"));
       } else {
         next(err);
       }
@@ -33,7 +31,7 @@ const getItems = (req, res, next) => {
       console.error(err);
 
       if (err.name === "DocumentNotFoundError") {
-         next(new NotFoundError("Invalid ID"));
+        next(new NotFoundError("Invalid ID"));
       } else {
         next(err);
       }
@@ -45,8 +43,9 @@ const deleteItem = (req, res, next) => {
     .orFail()
     .then((item) => {
       if (!item.owner.equals(req.user._id)) {
-        throw new ForbiddenError("The user is trying to remove the card of another user");
-      
+        throw new ForbiddenError(
+          "The user is trying to remove the card of another user",
+        );
       }
 
       ClothingItem.deleteOne({ _id: req.params.itemId })
@@ -57,14 +56,15 @@ const deleteItem = (req, res, next) => {
       console.error(err);
 
       if (err.name === "DocumentNotFoundError") {
-         next(new NotFoundError( "There is no clothing item with the requested id"));
+        next(
+          new NotFoundError("There is no clothing item with the requested id"),
+        );
       }
       if (err.name === "CastError") {
-         next(new NotFoundError("Invalid ID"));
+        next(new NotFoundError("Invalid ID"));
       } else {
         next(err);
       }
-    
     });
 };
 
@@ -81,14 +81,15 @@ const likeItem = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "CastError") {
-       next (new BadRequestError("Invalid ID"));
+        next(new BadRequestError("Invalid ID"));
       }
       if (err.name === "DocumentNotFoundError") {
-         next (new NotFoundError("The request was sent to a non-existent address"));
-      
+        next(
+          new NotFoundError("The request was sent to a non-existent address"),
+        );
       } else {
-          next(err);
-         }
+        next(err);
+      }
     });
 };
 
@@ -106,14 +107,15 @@ const dislikeItem = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "CastError") {
-         next (new BadRequestError("Invalid ID"));
+        next(new BadRequestError("Invalid ID"));
       }
       if (err.name === "DocumentNotFoundError") {
-        next (new NotFoundError("The request was sent to a non-existent address"));
+        next(
+          new NotFoundError("The request was sent to a non-existent address"),
+        );
       } else {
         next(err);
-       }
-     
+      }
     });
 };
 
@@ -124,4 +126,3 @@ module.exports = {
   likeItem,
   dislikeItem,
 };
-
