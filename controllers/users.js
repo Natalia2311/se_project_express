@@ -73,7 +73,7 @@ const login = (req, res, next) => {
 const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail()
-    .then(() => res.status(200))
+    .then(() => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
 
