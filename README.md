@@ -21,19 +21,10 @@ In this project:
  3.Create middleware for authorization
  4.Add a controller and route to get the user data and modify the user data
  5.Configure user rights
- 6.
-
-## Running the Project
-`npm run start` — to launch the server 
-
-`npm run dev` — to launch the server with the hot reload feature
-
-### Testing
-Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
-
+ 
 
 #### Improved WTWR application by adding three new middlewares to it, and you deployed the application to the cloud. 
-wtwr.polonisgroup.com
+
 
 Created a virtual machine for the remote server on Google Cloud and connected to the server through SSH
 
